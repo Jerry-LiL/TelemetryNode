@@ -1,0 +1,19 @@
+services:
+  node:
+    build: .
+    command: ["./build/telemetry_node", "--link", "tcp://0.0.0.0:8765"]
+    ports:
+      - "8765:8765"
+  monitor:
+    build: .
+    depends_on:
+      - node
+    environment:
+      PYTHONPATH: /src/python
+    command:
+      - python3
+      - -m
+      - telemetry_monitor
+      - --port
+      - socket://node:8765
+      - --check
