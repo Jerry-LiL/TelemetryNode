@@ -100,3 +100,12 @@ target_include_directories(esp32_bsp PRIVATE
     firmware/include
 )
 target_compile_options(esp32_bsp PRIVATE ${TN_WARNINGS})
+
+add_test(
+    NAME pytest
+    COMMAND ${CMAKE_COMMAND} -E env
+            PYTHONPATH=${CMAKE_SOURCE_DIR}/python
+            TELEMETRY_NODE=$<TARGET_FILE:telemetry_node>
+            python3 -m pytest -q python/tests
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+)
